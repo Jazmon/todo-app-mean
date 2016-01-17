@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  div(class="container" ng-app="todoApp")
+    div(class="card-panel blue darken-2 white-text" ng-controller="LoginController")
+      div(class="row")
+        div(class="col s12 m12 l12")
+          h1=title
+      div(class="row" ng-if="message")
+        div(class="col s12 m8 l6 card-panel white")
+          p(class="red-text") {{message}}
+            i(class="material-icons left") warning
+      div(class="row")
+        form(ng-submit="login(user)" class="col s12 m12 l8")
+          div(class="row")
+            div(class="input-field col s12 m8 l8")
+              input(type="text" ng-model="user.name")
+              label(class="active") Username
+          div(class="row")
+            div(class="input-field col s12 m8 l8")
+              input(type="password" ng-model="user.password")
+              label(class="active") password
+          div(class="row")
+            div(class="col s12 m8 l4")
+              button(type="submit" class="btn waves-effect waves-light") Sign in
+                i(class="material-icons right") send
+  script(src="js/script.js" type="text/javascript")
+  script(src="js/services.js" type="text/javascript")
+  script(src="js/controllers.js" type="text/javascript")

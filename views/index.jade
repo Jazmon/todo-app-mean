@@ -1,0 +1,101 @@
+extends layout
+
+block content
+  div(ng-app="todoApp")
+    div(class="progress" ng-if="loading")
+      div(class="indeterminate")
+    div(class="container")
+      div(class="row")
+        div(class="col s12 m12 l12")
+          h1= title
+      div(ng-controller="TodoController")
+        // NEW TODO PANEL
+        div(class="section card-panel blue darken-3 white-text")
+          div(class="row")
+            div(class="col s12 m12 l12")
+              h3(ng-if="!editing") New Todo
+              h3(ng-if="editing") Edit Todo
+          div(class="row")
+            // NEW TODO FORM
+            form(ng-submit="save(todo)" class="col s12 m12 l12")
+              div(class="row")
+                div(class="input-field col s12 m12 l6")
+                  input(type="text" placeholder="Do the dishes" ng-model="todo.task")
+                  label(class="active") Task
+                div(class="input-field col s12 m12 l2 offset-l2")
+                  select(id="priorityId" ng-model="todo.priority")
+                    option(value="" disabled selected)|Choose 
+                    option(value="1")|1 (High)
+                    option(value="2")|2 (Medium)
+                    option(value="3")|3 (Low)
+                  label(class="active input-field") Priority
+              div(class="row")
+                div(class="input-field col s12 m4 l4")
+                  button(type="submit" class="btn waves-effect waves-light") Submit
+                    i(class="material-icons right") send
+                div(class="input-field col s12 m4 l4")
+                  button(ng-if="editing" ng-click="newTodo()" class="btn waves-effect waves-light") New Todo
+          div(class="divider")
+          // LIST EDIT THING
+          div(class="row")
+            div(class="col s6 m6 l6")
+              h3 List
+              // NEW LIST CREATE FORM
+          div(ng-if="newList" class="section card-panel teal darken-3 white-text")
+            div(class="row")
+              h3 New List
+            div(class="row")
+              form(ng-submit="saveList(list)" class="col s12 m12 l12")
+                div(class="row")
+                  div(class="input-field col s6 m6 l6")
+                    input(type="text" placeholder="My new list" ng-model="list.name")
+                    label(class="active") List name
+                div(class="row")
+                  button(type="submit" class="btn wave-effect waves-light") Submit
+                    i(class="material-icons right") send
+          div(class="row")
+            div(class="col s12 m4 l3")
+              button(ng-click="createNewList()" class="input-field btn waves-effect waves-light green") New
+                i(class="material-icons right") add
+            div(class="col s12 m4 l3")
+              button(ng-click="showListForm(true)" class="input-field btn waves-effect waves-light yellow black-text") Edit 
+                i(class="material-icons right") edit
+            div(class="col s12 m4 l3")
+              button(ng-click="removeList()" class="input-field btn waves-effect waves-light red") Remove 
+                i(class="material-icons right") delete
+        // TODOS LIST
+        div(class="section")
+        div(class="card-panel")
+          // LIST TABS
+          div(class="row")
+            div(class="col s12")
+              ul(class="tabs" )
+                li(class="tab col s3" ng-repeat="list in lists")
+                  a(ng-href="#{{list.name}}" ng-click="setList(list)") {{list.name}}
+          // DIV LIST
+          div(ng-if="!loading && !newList")
+            div(class="row")
+              div(class="col s2 m2 l2") 
+                a(href="" ng-click="orderBy('done')") Done 
+              div(class="col s6 m6 l6")
+                a(href="" ng-click="orderBy('task')") Task
+              div(class="col s2 m2 l2")
+                a(href="" ng-click="orderBy('priority')") Priority
+            div(class="row card-panel hoverable" ng-repeat="todo in todos | filter:filter | orderBy: orderProp")
+              div(class="col s2 m2 l2")
+                a(href="" ng-click="markDone(todo)")
+                  span(ng-if="todo.done") [&#10004]
+                  span(ng-if="!todo.done") [&#10006]
+              div(class="col s4 m6 l6")
+                span( ng-click="activeTodo(todo)")|{{todo.task}}
+              div(class="col s2 m2 l2")
+                span {{todo.priority}}
+              div(class="col s4 m2 l2")
+                a(href="" ng-click="removeTask(todo)" class="waves-effect waves-light btn red")
+                    i(class="material-icons") clear
+                  
+  script(src="js/script.js" type="text/javascript")
+  script(src="js/services.js" type="text/javascript")
+  script(src="js/controllers.js" type="text/javascript")
+        
+  
